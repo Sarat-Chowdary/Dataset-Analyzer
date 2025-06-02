@@ -31,9 +31,8 @@ An intelligent agentic flow powered by Anthropic's Claude that automatically cle
    ```
 
 3. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   # Add your Anthropic API key to .env file
+   ```
+   # Add your Anthropic API key 
    ANTHROPIC_API_KEY=your_api_key_here
    ```
 
