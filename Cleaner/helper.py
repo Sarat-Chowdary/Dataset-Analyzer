@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from llm.agent import LLM
+from llm.chat_agent import ChatLLM
 from langchain_core.output_parsers import JsonOutputParser
 
 def static_process_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -30,7 +30,7 @@ def llm_process_rows(prompt: str, df: pd.DataFrame) -> pd.DataFrame:
     sample = df.head(5).to_dict(orient="records")
     
     parser = JsonOutputParser()
-    chain = prompt | LLM | parser
+    chain = prompt | ChatLLM | parser
     response = chain.invoke({
         "schema": schema,
         "sample": sample

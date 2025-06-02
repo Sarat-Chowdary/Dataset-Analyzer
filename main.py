@@ -2,13 +2,14 @@ import streamlit as st
 import pandas as pd
 import os
 from Cleaner.data_cleaner import clean_dataset
-# from llm.agent import DefaultLLMAgent
-from llm.agent import LLM
+# from llm.chat_agent import DefaultLLMAgent
+from llm.chat_agent import ChatLLM
+from llm.data_analyst_agent import DataAnalystAgent
 
 # agent = DefaultLLMAgent()
 
 st.set_page_config(page_title="Dataset Analyzer")
-st.title("📁 Upload your dataset")
+st.title("Upload your dataset")
 
 data_dir = "uploads"
 os.makedirs(data_dir, exist_ok=True)
@@ -22,9 +23,8 @@ if uploaded_file is not None:
     st.success(f"File saved to `{csv_path}`")
 
 if os.path.exists(csv_path):
-    st.experimental_rerun_interval = 5 
     df = pd.read_csv(csv_path)
-    st.subheader("📈 Current Data:")
+    st.subheader("Data:")
     st.dataframe(df, use_container_width=True)
 else:
     st.info("Upload a CSV file to begin.")
@@ -53,7 +53,7 @@ st.title("Dataset Analyzer")
 st.write("Ask me anything about your dataset!")
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "system", "content": "You are a helpful messaging assistant."}]
+    st.session_state.messages = []
 
 for msg in st.session_state.messages[1:]:
     with st.chat_message(msg["role"]):
@@ -67,10 +67,8 @@ if user_input:
         st.markdown(user_input)
 
     with st.chat_message("assistant"):
-        # response = agent.get_response(st.session_state.messages)
-        response = LLM.invoke(st.session_state.messages)
-        print(response)
-        reply = response.content
+        reply = DataAnalystAgent.run(st.session_state.messages)
+        
         st.markdown(reply)
 
     st.session_state.messages.append({"role": "assistant", "content": reply})

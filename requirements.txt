@@ -4,3 +4,4 @@ anthropic
 langchain_anthropic
 langchain_core
 numpy
+langchain
