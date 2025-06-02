@@ -16,9 +16,9 @@ class DefaultLLMAgent:
     
 
 LLM = ChatAnthropic(
-    model="claude-3-sonnet-20240229",
+    model="claude-3-5-haiku-20241022",
     temperature=0,
-    max_tokens=100,
+    max_tokens=1000,
     timeout=None,
     max_retries=1,
     )

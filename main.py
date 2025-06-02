@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 from Cleaner.data_cleaner import clean_dataset
-from llm.agent import LLMAgent
+# from llm.agent import DefaultLLMAgent
 from llm.agent import LLM
 
 # agent = DefaultLLMAgent()
@@ -29,10 +29,19 @@ if os.path.exists(csv_path):
 else:
     st.info("Upload a CSV file to begin.")
 
-if st.button("Clean Dataset"):
+if st.button("Clean Dataset (LLM)"):
     if os.path.exists(csv_path):
         df = pd.read_csv(csv_path)
-        df = clean_dataset(df)
+        df = clean_dataset(df, 'llm')
+        st.subheader("Data Read from File:")
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.warning("No CSV file found in the data folder.")
+
+if st.button("Clean Dataset (static)"):
+    if os.path.exists(csv_path):
+        df = pd.read_csv(csv_path)
+        df = clean_dataset(df, 'static')
         st.subheader("Data Read from File:")
         st.dataframe(df, use_container_width=True)
     else:
@@ -40,7 +49,7 @@ if st.button("Clean Dataset"):
 
 
 ### Chat bot
-st.title("Dataset Cleaner")
+st.title("Dataset Analyzer")
 st.write("Ask me anything about your dataset!")
 
 if "messages" not in st.session_state:
