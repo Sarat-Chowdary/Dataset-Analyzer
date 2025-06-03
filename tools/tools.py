@@ -69,6 +69,8 @@ def execute_on_dataframe(code: str) -> dict:
         result = local_scope.get("result", None)
 
         json_result = json.loads(json.dumps(result, default=str))
+        if json_result is None:
+            return {"sucess": False, "error": "Provide code as plaintext without following any json format", "traceback": None}
         return {"success": True, "result": json_result}
 
     except Exception as e:
